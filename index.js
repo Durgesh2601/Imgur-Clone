@@ -21,25 +21,32 @@ let res_div = document.getElementById("search-res");
 getData();
 
 async function getData () {
-    let res = await fetch("https://api.imgur.com/3/gallery/hot", {headers: {Authorization: `Client-ID ${IMGUR_API_CLIENT_ID}`}});
+    let res = await fetch("https://api.imgur.com/3/gallery/hot/", {headers: {Authorization: `Client-ID ${IMGUR_API_CLIENT_ID}`}});
     let data = await res.json();
-    displayData(data.data);
+    displayData(data);
     console.log(data)
 }
 
 function displayData (data) {
     console.log(data)
-    data.map((e) => {
+    data.data.map((e) => {
         let data_div = document.createElement("div");
         data_div.setAttribute("id", "data_div")
         let img = document.createElement("img");
-        img.src = e.images[0].link;
+        if(e.images) {
+            img.src = e.images[0].link;
+        } else {
+            img.src = e.link;
+        }
         img.style.height = "170px";
         img.style.width = "99%";
         let h5 = document.createElement("h5");
         h5.style.marginLeft ="6%"
         h5.textContent = e.title;
         h5.style.color = "white";
+        h5.style.textOverflow = "ellipsis";
+        h5.style.width = "90%";
+        h5.style.height = "25%"
         let divAct = document.createElement("div");
         divAct.setAttribute("id", "divAct")
         let up = document.createElement("i");
